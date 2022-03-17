@@ -1,0 +1,28 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Ensure HAProxy is installed
+      stat:
+        path: "/usr/sbin/haproxy"
+      register: result
+      changed_when: false
+      failed_when: result.stat.isreg is not defined or not result.stat.isreg
+
+    - name: Ensure HAProxy is running
+      service:
+        name: haproxy
+        state: started
+      check_mode: true
+      register: _haproxy_service
+      failed_when: _haproxy_service.changed
+
+    - name: Ensure HAProxy configuration is correct
+      copy:
+        src: files/haproxy.cfg
+        dest: /etc/haproxy/haproxy.cfg
+        mode: 0644
+      check_mode: true
+      register: _haproxy_config
+      failed_when: _haproxy_config.changed

@@ -1,0 +1,8 @@
+---
+haproxy_host_config_listen:
+  stats:
+    bind: "*:8404"
+    stats:
+      - enable
+      - uri /monitor
+      - refresh 5s

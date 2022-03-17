@@ -1,0 +1,40 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+# {{ ansible_managed }}
+{% import "haproxy-macros.j2" as macros with context %}
+
+{{ macros.haproxy_config_block(_haproxy_config_global, 'global') }}
+{% if _haproxy_config_defaults %}
+{%   for name, config in _haproxy_config_defaults|dictsort %}
+{{ macros.haproxy_config_block(config, 'defaults', name) -}}
+{%     if not loop.last %}
+
+{%     endif %}
+{%   endfor %}
+{% endif %}
+{% if _haproxy_config_frontend %}
+
+{%   for name, config in _haproxy_config_frontend|dictsort %}
+{{ macros.haproxy_config_block(config, 'frontend', name) -}}
+{%     if not loop.last %}
+
+{%     endif %}
+{%   endfor %}
+{% endif %}
+{% if _haproxy_config_backend %}
+
+{%   for name, config in _haproxy_config_backend|dictsort %}
+{{ macros.haproxy_config_block(config, 'backend', name) -}}
+{%     if not loop.last %}
+
+{%     endif %}
+{%   endfor %}
+{% endif %}
+{% if _haproxy_config_listen %}
+
+{%   for name, config in _haproxy_config_listen|dictsort %}
+{{ macros.haproxy_config_block(config, 'listen', name) -}}
+{%     if not loop.last %}
+
+{%     endif %}
+{%   endfor %}
+{% endif %}

@@ -1,0 +1,45 @@
+---
+haproxy_config_global:
+  log:
+    - /dev/log local0
+    - /dev/log local1 notice
+  chroot: /var/lib/haproxy
+  user: haproxy
+  group: haproxy
+  daemon: true
+  ca-base: /etc/ssl/certs
+  crt-base: /etc/ssl/private
+  ssl-default-bind-ciphers:
+    "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:\
+     ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:\
+     ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:\
+     DHE-RSA-AES256-GCM-SHA384"
+  ssl-default-bind-ciphersuites:
+    "TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256"
+  ssl-default-bind-options: ssl-min-ver TLSv1.2 no-tls-tickets
+
+haproxy_group_config_defaults:
+  http:
+    log: global
+    mode: http
+    option:
+      - httplog
+      - dontlognull
+
+haproxy_group_config_frontend:
+  www.example.com:
+    _from: http
+    bind:
+      - 127.0.0.1:80
+      - 127.0.0.1:8080
+    default_backend: web_servers
+
+haproxy_group_config_backend:
+  web_servers:
+    balance: roundrobin
+    cookie: SERVERUSED insert indirect nocache
+    option: httpchk HEAD /
+    default-server: check maxconn 20
+    server:
+      - server1 127.0.0.1:80 cookie server1
+      - server2 127.0.0.1:8080 cookie server2

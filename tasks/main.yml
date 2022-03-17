@@ -1,0 +1,76 @@
+---
+- name: Install required dependencies on Ubuntu >= 20.04
+  apt:
+    name: gnupg
+    state: present
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('20.04', '>=')
+
+- name: Install HAProxy repository key
+  apt_key:
+    id: "CFFB779AADC995E4F350A060505D97A41C61B9CD"
+    keyserver: "keyserver.ubuntu.com"
+    keyring: "/etc/apt/trusted.gpg.d/haproxy.gpg"
+    state: present
+
+- name: Install HAProxy repository
+  apt_repository:
+    repo: >
+      deb https://ppa.launchpadcontent.net/vbernat/haproxy-2.5/{{ ansible_distribution|lower }}
+      {{ ansible_distribution_release }} main
+    filename: haproxy
+    state: present
+    update_cache: yes
+
+- name: Install HAProxy
+  apt:
+    name: "{{ haproxy_packages }}"
+    state: present
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Divert HAProxy configuration file
+  command: >
+    dpkg-divert --quiet --local
+    --divert /etc/haproxy/haproxy.cfg.dpkg-divert
+    --rename /etc/haproxy/haproxy.cfg
+  args:
+    creates: "/etc/haproxy/haproxy.cfg.dpkg-divert"
+
+- name: Install HAProxy daemon configuration
+  template:
+    src: etc/haproxy/haproxy.cfg.j2
+    dest: "/etc/haproxy/haproxy.cfg"
+    owner: "{{ haproxy_config_owner }}"
+    group: "{{ haproxy_config_group }}"
+    mode: "{{ haproxy_config_mode }}"
+    backup: "{{ haproxy_config_backup }}"
+    validate: /usr/sbin/haproxy -c -f %s
+  vars:
+    _haproxy_config_global: >-
+      {{ haproxy_config_global |
+      combine(haproxy_group_config_global, recursive=True) |
+      combine(haproxy_host_config_global, recursive=True) }}
+    _haproxy_config_defaults: >-
+      {{ haproxy_config_defaults |
+      combine(haproxy_group_config_defaults, recursive=True) |
+      combine(haproxy_host_config_defaults, recursive=True) }}
+    _haproxy_config_frontend: >-
+      {{ haproxy_config_frontend |
+      combine(haproxy_group_config_frontend, recursive=True) |
+      combine(haproxy_host_config_frontend, recursive=True) }}
+    _haproxy_config_backend: >-
+      {{ haproxy_config_backend |
+      combine(haproxy_group_config_backend, recursive=True) |
+      combine(haproxy_host_config_backend, recursive=True) }}
+    _haproxy_config_listen: >-
+      {{ haproxy_config_listen |
+      combine(haproxy_group_config_listen, recursive=True) |
+      combine(haproxy_host_config_listen, recursive=True) }}
+
+  notify: restart haproxy
+
+- name: Enable and start HAProxy
+  service:
+    name: haproxy
+    enabled: "{{ haproxy_service_enabled }}"
+    state: "{{ haproxy_service_state }}"
+  ignore_errors: "{{ ansible_check_mode }}"
