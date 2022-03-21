@@ -26,3 +26,15 @@
       check_mode: true
       register: _haproxy_config
       failed_when: _haproxy_config.changed
+
+    - name: Ensure HAProxy is responding on configured ports
+      command:
+        argv:
+          - curl
+          - -s
+          - "http://127.0.0.1:{{ item }}"
+      loop:
+        - 80
+        - 8080
+        - 4242
+        - 1337
