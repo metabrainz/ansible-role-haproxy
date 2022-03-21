@@ -33,6 +33,11 @@ haproxy_group_config_frontend:
       - 127.0.0.1:80
       - 127.0.0.1:8080
     default_backend: web_servers
+  www.example2.com:
+    bind:
+      - 127.0.0.1:4242
+      - 127.0.0.1:1337
+    default_backend: web_servers
 
 haproxy_group_config_backend:
   web_servers:

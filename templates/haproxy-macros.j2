@@ -1,7 +1,7 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 
 {% macro haproxy_config_block(config, section, name=None) -%}
-{{ section }}{{ " " + name if name }}{{ " from " + config._from|d() if config._from|d() }}
+{{ section }}{{ (" " + name) if name else "" }}{{ (" from " + config._from|d()) if config._from|d() else "" }}
 {% for option, value in config|dictsort if option != "_from" %}
 {{ haproxy_format_option(option, value)|indent(4, true) -}}
 {%   endfor %}
