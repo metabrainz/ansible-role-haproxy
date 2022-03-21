@@ -28,7 +28,7 @@
       failed_when: _haproxy_config.changed
 
     - name: Ensure HAProxy is responding on configured ports
-      command:
+      command: # noqa command-instead-of-module
         argv:
           - curl
           - -s
@@ -38,3 +38,4 @@
         - 8080
         - 4242
         - 1337
+      changed_when: false
