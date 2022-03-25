@@ -8,13 +8,13 @@
 {% endmacro -%}
 
 {% macro haproxy_format_option(option, value) -%}
-{% if value is string %}
-{{ option }} {{ value }}
-{% elif value is bool and option %}
+{% if value is bool and option %}
 {{ option }}
 {% elif value is list and value %}
 {%   for v in value %}
 {{ option }} {{ v }}
 {%   endfor %}
+{% else %}
+{{ option }} {{ value }}
 {% endif %}
 {% endmacro -%}

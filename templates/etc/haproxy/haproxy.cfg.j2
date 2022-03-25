@@ -38,3 +38,12 @@
 {%     endif %}
 {%   endfor %}
 {% endif %}
+{% if _haproxy_config_resolvers %}
+
+{%   for name, config in _haproxy_config_resolvers|dictsort %}
+{{ macros.haproxy_config_block(config, 'resolvers', name) -}}
+{%     if not loop.last %}
+
+{%     endif %}
+{%   endfor %}
+{% endif %}

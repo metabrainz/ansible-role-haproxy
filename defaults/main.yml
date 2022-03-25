@@ -96,3 +96,12 @@ haproxy_host_config_backend: {}
 haproxy_config_listen: {}
 haproxy_group_config_listen: {}
 haproxy_host_config_listen: {}
+
+#haproxy_config_resolvers:
+#  consul:
+#    nameserver: "consul 127.0.0.1:8600"
+#    accepted_payload_size: 8192
+#    hold: valid 5s
+haproxy_config_resolvers: {}
+haproxy_group_config_resolvers: {}
+haproxy_host_config_resolvers: {}
