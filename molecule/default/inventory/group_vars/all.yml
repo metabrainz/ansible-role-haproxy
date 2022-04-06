@@ -48,3 +48,13 @@ haproxy_group_config_backend:
     server:
       - server1 127.0.0.1:80 cookie server1
       - server2 127.0.0.1:8080 cookie server2
+
+haproxy_systemd_overrides:
+  Service:
+    LimitNOFILE: 500000
+    ProtectHome: true
+    RestrictFileSystems:
+      - ext4
+      - ext2
+  Unit:
+    After: network.target

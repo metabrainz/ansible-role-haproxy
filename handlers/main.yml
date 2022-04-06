@@ -1,4 +1,11 @@
 ---
+- name: Reload SystemD and restart HAProxy
+  listen: reload systemd and restart haproxy
+  systemd:
+    daemon_reload: yes
+  when: ansible_service_mgr == "systemd"
+  notify: restart haproxy
+
 - name: Restart HAProxy
   listen: restart haproxy
   service:

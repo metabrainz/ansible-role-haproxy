@@ -69,8 +69,27 @@
       {{ haproxy_config_resolvers |
       combine(haproxy_group_config_resolvers, recursive=True) |
       combine(haproxy_host_config_resolvers, recursive=True) }}
-
   notify: restart haproxy
+
+- name: Create HAProxy SystemD service drop-in directory
+  file:
+    path: /etc/systemd/system/haproxy.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Create HAProxy SystemD service drop-in file
+  template:
+    src: etc/systemd/system/haproxy.service.d/ansible.conf.j2
+    dest: /etc/systemd/system/haproxy.service.d/ansible.conf
+    mode: 0644
+  vars:
+    _haproxy_systemd_overrides: >-
+      {{ haproxy_systemd_overrides |
+      combine(haproxy_group_systemd_overrides, recursive=True) |
+      combine(haproxy_host_systemd_overrides, recursive=True) }}
+  notify: reload systemd and restart haproxy
 
 - name: Enable and start HAProxy
   service:

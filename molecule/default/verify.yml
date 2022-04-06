@@ -27,6 +27,16 @@
       register: _haproxy_config
       failed_when: _haproxy_config.changed
 
+    - name: Ensure HAProxy SystemD drop-in configuration is correct
+      copy:
+        src: files/systemd-ansible.conf
+        dest: /etc/systemd/system/haproxy.service.d/ansible.conf
+        mode: 0644
+      check_mode: true
+      register: _haproxy_systemd_config
+      failed_when: _haproxy_systemd_config.changed
+      diff: true
+
     - name: Ensure HAProxy is responding on configured ports
       command: # noqa command-instead-of-module
         argv:

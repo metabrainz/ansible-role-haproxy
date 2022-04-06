@@ -4,6 +4,19 @@ haproxy_service_enabled: true
 haproxy_service_state: started
 haproxy_restart_handler_state: restarted
 
+#haproxy_systemd_overrides:
+#  Service:
+#    LimitNOFILE: 500000
+#    ProtectHome: true
+#    RestrictFileSystems:
+#      - ext4
+#      - ext2
+#  Unit:
+#    After: network.target
+haproxy_systemd_overrides: {}
+haproxy_group_systemd_overrides: {}
+haproxy_host_systemd_overrides: {}
+
 # package options
 haproxy_version: 2.5
 haproxy_packages:

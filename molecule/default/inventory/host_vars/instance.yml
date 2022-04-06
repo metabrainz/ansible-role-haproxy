@@ -6,7 +6,12 @@ haproxy_host_config_listen:
       - enable
       - uri /monitor
       - refresh 5s
+
 haproxy_host_config_resolvers:
   dns:
     nameserver: "dns1 192.168.50.30:53"
     accepted_payload_size: 8192
+
+haproxy_host_systemd_overrides:
+  Service:
+    LimitNOFILE: 500001
