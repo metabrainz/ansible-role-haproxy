@@ -14,8 +14,8 @@
 
 - name: Install HAProxy repository
   apt_repository:
-    repo: >
-      deb https://ppa.launchpadcontent.net/vbernat/haproxy-2.5/{{ ansible_distribution|lower }}
+    repo: >-
+      deb https://ppa.launchpadcontent.net/vbernat/haproxy-2.5/{{ ansible_distribution | lower }}
       {{ ansible_distribution_release }} main
     filename: haproxy
     state: present
