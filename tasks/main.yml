@@ -46,29 +46,23 @@
     validate: /usr/sbin/haproxy -c -f %s
   vars:
     _haproxy_config_global: >-
-      {{ haproxy_config_global |
-      combine(haproxy_group_config_global, recursive=True) |
-      combine(haproxy_host_config_global, recursive=True) }}
+      {{ haproxy_config_global | combine(
+        haproxy_group_config_global, haproxy_host_config_global, recursive=True) }}
     _haproxy_config_defaults: >-
-      {{ haproxy_config_defaults |
-      combine(haproxy_group_config_defaults, recursive=True) |
-      combine(haproxy_host_config_defaults, recursive=True) }}
+      {{ haproxy_config_defaults | combine(
+        haproxy_group_config_defaults, haproxy_host_config_defaults, recursive=True) }}
     _haproxy_config_frontend: >-
-      {{ haproxy_config_frontend |
-      combine(haproxy_group_config_frontend, recursive=True) |
-      combine(haproxy_host_config_frontend, recursive=True) }}
+      {{ haproxy_config_frontend | combine(
+        haproxy_group_config_frontend, haproxy_host_config_frontend, recursive=True) }}
     _haproxy_config_backend: >-
-      {{ haproxy_config_backend |
-      combine(haproxy_group_config_backend, recursive=True) |
-      combine(haproxy_host_config_backend, recursive=True) }}
+      {{ haproxy_config_backend | combine(
+        haproxy_group_config_backend, haproxy_host_config_backend, recursive=True) }}
     _haproxy_config_listen: >-
-      {{ haproxy_config_listen |
-      combine(haproxy_group_config_listen, recursive=True) |
-      combine(haproxy_host_config_listen, recursive=True) }}
+      {{ haproxy_config_listen | combine(
+        haproxy_group_config_listen, haproxy_host_config_listen, recursive=True) }}
     _haproxy_config_resolvers: >-
-      {{ haproxy_config_resolvers |
-      combine(haproxy_group_config_resolvers, recursive=True) |
-      combine(haproxy_host_config_resolvers, recursive=True) }}
+      {{ haproxy_config_resolvers | combine(
+        haproxy_group_config_resolvers, haproxy_host_config_resolvers, recursive=True) }}
   notify: restart haproxy
 
 - name: Create HAProxy SystemD service drop-in directory
