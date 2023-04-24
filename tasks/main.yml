@@ -1,21 +1,28 @@
 ---
-- name: Install required dependencies on Ubuntu >= 20.04
-  apt:
-    name: gnupg
-    state: present
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('20.04', '>=')
-
 - name: Install HAProxy repository key
-  apt_key:
-    id: "CFFB779AADC995E4F350A060505D97A41C61B9CD"
-    keyserver: "keyserver.ubuntu.com"
-    keyring: "/etc/apt/trusted.gpg.d/haproxy.gpg"
-    state: present
+  copy:
+    src: "{{ haproxy_repository_key_src }}"
+    dest: "{{ haproxy_repository_key_path }}"
+    mode: "0644"
+
+- name: Remove HAProxy repository key from /etc/apt/trusted.gpg.d
+  file:
+    path: "/etc/apt/trusted.gpg.d/haproxy.gpg"
+    state: absent
+
+- name: Remove old HAProxy repository
+  apt_repository:
+    repo: >-
+      deb https://ppa.launchpadcontent.net/vbernat/haproxy-2.5/{{ ansible_distribution | lower }}
+      {{ ansible_distribution_release }} main
+    filename: haproxy
+    state: absent
 
 - name: Install HAProxy repository
   apt_repository:
     repo: >-
-      deb https://ppa.launchpadcontent.net/vbernat/haproxy-2.5/{{ ansible_distribution | lower }}
+      deb [signed-by={{ haproxy_repository_key_path }}]
+      https://ppa.launchpadcontent.net/vbernat/haproxy-2.5/{{ ansible_distribution | lower }}
       {{ ansible_distribution_release }} main
     filename: haproxy
     state: present

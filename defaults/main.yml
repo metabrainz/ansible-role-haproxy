@@ -1,4 +1,7 @@
 ---
+haproxy_repository_key_src: haproxy.asc
+haproxy_repository_key_path: /usr/share/keyrings/haproxy.asc
+
 # service options
 haproxy_service_enabled: true
 haproxy_service_state: started
