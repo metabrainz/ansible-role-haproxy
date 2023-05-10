@@ -1,0 +1,8 @@
+#jinja2: trim_blocks: True, lstrip_blocks: True
+# {{ ansible_managed }}
+
+{% if item.value is list -%}
+{{ item.value | join("\n") }}
+{% else %}
+{{ item.value }}
+{%- endif %}

@@ -50,6 +50,18 @@ haproxy_group_config_backend:
       - server1 127.0.0.1:80 cookie server1
       - server2 127.0.0.1:8080 cookie server2
 
+haproxy_acls:
+  blocklist:
+    - 10.9.8.7
+    - 192.168.169.170
+  allowlist: |
+    1.1.1.1
+    8.8.8.8
+    9.9.9.9
+
+haproxy_group_acls:
+  example: "{{ lookup('ansible.builtin.file', 'files/example.acl') }}"
+
 haproxy_systemd_overrides:
   Service:
     LimitNOFILE: 500000

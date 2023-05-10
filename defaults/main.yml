@@ -6,6 +6,7 @@ haproxy_repository_key_path: /usr/share/keyrings/haproxy.asc
 haproxy_service_enabled: true
 haproxy_service_state: started
 haproxy_restart_handler_state: restarted
+haproxy_reload_handler_state: reloaded
 
 #haproxy_systemd_overrides:
 #  Service:
@@ -30,6 +31,11 @@ haproxy_config_owner: root
 haproxy_config_group: root
 haproxy_config_mode: "0644"
 haproxy_config_backup: false
+
+haproxy_acl_directory: /etc/haproxy/acl.d
+haproxy_acl_directory_owner: root
+haproxy_acl_directory_group: root
+haproxy_acl_directory_mode: "0755"
 
 haproxy_config_global:
   log:
@@ -121,3 +127,12 @@ haproxy_host_config_listen: {}
 haproxy_config_resolvers: {}
 haproxy_group_config_resolvers: {}
 haproxy_host_config_resolvers: {}
+
+haproxy_acls: {}
+haproxy_group_acls: {}
+haproxy_host_acls: {}
+
+haproxy_acls_backup: false
+# https://docs.ansible.com/ansible/latest/collections/ansible/builtin/combine_filter.html#keyword-parameters
+haproxy_acls_list_merge: replace
+haproxy_acls_recursive_merge: true
