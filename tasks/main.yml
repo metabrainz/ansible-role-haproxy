@@ -90,7 +90,9 @@
       {{ haproxy_systemd_overrides |
       combine(haproxy_group_systemd_overrides, recursive=True) |
       combine(haproxy_host_systemd_overrides, recursive=True) }}
-  notify: reload systemd and restart haproxy
+  notify:
+    - reload systemd
+    - restart haproxy
 
 - name: Enable and start HAProxy
   service:
