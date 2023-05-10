@@ -6,6 +6,7 @@ haproxy_host_config_listen:
       - enable
       - uri /monitor
       - refresh 5s
+    http-request: "deny if { src -f {{ haproxy_acl_directory }}/blocklist }"
 
 haproxy_host_config_resolvers:
   dns:
@@ -15,3 +16,8 @@ haproxy_host_config_resolvers:
 haproxy_host_systemd_overrides:
   Service:
     LimitNOFILE: 500001
+
+haproxy_acls_list_merge: append
+haproxy_host_acls:
+  blocklist:
+    - 127.0.0.1/8

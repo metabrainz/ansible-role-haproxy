@@ -1,8 +1,10 @@
 def test_bool(value):
     return isinstance(value, bool)
 
+
 def test_list(value):
     return isinstance(value, list)
+
 
 class TestModule(object):
 

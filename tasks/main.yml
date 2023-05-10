@@ -42,6 +42,32 @@
   args:
     creates: "/etc/haproxy/haproxy.cfg.dpkg-divert"
 
+- name: Create HAProxy ACL directory
+  file:
+    path: "{{ haproxy_acl_directory }}"
+    owner: "{{ haproxy_acl_directory_owner }}"
+    group: "{{ haproxy_acl_directory_group }}"
+    mode: "{{ haproxy_acl_directory_mode }}"
+    state: directory
+
+- name: Install HAProxy ACLs
+  template:
+    dest: "{{ haproxy_acl_directory }}/{{ item.key }}"
+    src: etc/haproxy/acl.d/acl.j2
+    mode: "0644"
+    backup: "{{ haproxy_acls_backup }}"
+  loop: "{{ _haproxy_acls | dict2items }}"
+  notify: reload haproxy
+  vars:
+    _haproxy_acls: >-
+      {{
+        haproxy_acls | combine(
+          haproxy_group_acls, haproxy_host_acls,
+          list_merge=haproxy_acls_list_merge,
+          recursive=haproxy_acls_recursive_merge
+        )
+      }}
+
 - name: Install HAProxy daemon configuration
   template:
     src: etc/haproxy/haproxy.cfg.j2

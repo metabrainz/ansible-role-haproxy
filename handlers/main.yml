@@ -5,6 +5,13 @@
     daemon_reload: yes
   when: ansible_service_mgr == "systemd"
 
+- name: Reload HAProxy
+  listen: reload haproxy
+  service:
+    name: haproxy
+    state: "{{ haproxy_reload_handler_state }}"
+  ignore_errors: "{{ ansible_check_mode }}"
+
 - name: Restart HAProxy
   listen: restart haproxy
   service:
