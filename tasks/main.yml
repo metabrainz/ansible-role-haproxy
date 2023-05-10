@@ -13,7 +13,7 @@
 - name: Remove old HAProxy repository
   apt_repository:
     repo: >-
-      deb https://ppa.launchpadcontent.net/vbernat/haproxy-2.5/{{ ansible_distribution | lower }}
+      deb https://ppa.launchpadcontent.net/vbernat/haproxy-{{ haproxy_version }}/{{ ansible_distribution | lower }}
       {{ ansible_distribution_release }} main
     filename: haproxy
     state: absent
@@ -22,7 +22,7 @@
   apt_repository:
     repo: >-
       deb [signed-by={{ haproxy_repository_key_path }}]
-      https://ppa.launchpadcontent.net/vbernat/haproxy-2.5/{{ ansible_distribution | lower }}
+      https://ppa.launchpadcontent.net/vbernat/haproxy-{{ haproxy_version }}/{{ ansible_distribution | lower }}
       {{ ansible_distribution_release }} main
     filename: haproxy
     state: present
