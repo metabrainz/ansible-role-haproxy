@@ -54,8 +54,8 @@
   template:
     dest: "{{ haproxy_acl_directory }}/{{ item.key }}"
     src: etc/haproxy/acl.d/acl.j2
-    mode: "0644"
-    backup: "{{ haproxy_acls_backup }}"
+    mode: "{{ item.value.mode | d('0644') }}"
+    backup: "{{ item.value.backup | d(haproxy_acls_backup) }}"
   loop: "{{ _haproxy_acls | dict2items }}"
   notify: reload haproxy
   vars:

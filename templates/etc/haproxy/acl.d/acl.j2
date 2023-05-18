@@ -3,6 +3,16 @@
 
 {% if item.value is list -%}
 {{ item.value | join("\n") }}
+{% elif item.value is mapping -%}
+{%   if item.value.content is defined -%}
+{%     if item.value.content is list -%}
+{{ item.value.content | join("\n") }}
+{%     else %}
+{{ item.value.content }}
+{%-    endif %}
+{%   else %}
+{{ lookup('file', item.value.file) }}
+{%-  endif %}
 {% else %}
 {{ item.value }}
 {%- endif %}
