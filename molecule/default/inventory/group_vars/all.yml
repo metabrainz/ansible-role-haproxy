@@ -50,6 +50,18 @@ haproxy_group_config_backend:
       - server1 127.0.0.1:80 cookie server1
       - server2 127.0.0.1:8080 cookie server2
 
+haproxy_config_peers:
+  mypeers:
+    peer:
+      - haproxy1 192.168.0.1:1024
+      - haproxy2 192.168.0.2:1024
+  mypeers_advanced:
+    bind: 192.168.0.1:1025
+    default-server: ssl verify none
+    server:
+      - haproxy1
+      - haproxy2 192.168.0.2:1025
+
 haproxy_acls:
   blocklist:
     - 10.9.8.7

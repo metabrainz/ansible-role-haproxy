@@ -128,6 +128,31 @@ haproxy_config_resolvers: {}
 haproxy_group_config_resolvers: {}
 haproxy_host_config_resolvers: {}
 
+#haproxy_config_peers:
+#  # Simple peer configuration (old way)
+#  mypeers:
+#    peer:
+#      - haproxy1 192.168.0.1:1024
+#      - haproxy2 192.168.0.2:1024
+#      - haproxy3 10.2.0.1:1024
+#  # Advanced configuration with bind and server
+#  mypeers_ssl:
+#    bind: 192.168.0.1:1024 ssl crt mycerts/pem
+#    default-server: ssl verify none
+#    server:
+#      - haproxy1  # local peer
+#      - haproxy2 192.168.0.2:1024
+#      - haproxy3 10.2.0.1:1024
+#  # With stick-table
+#  mypeers_table:
+#    peer:
+#      - haproxy1 192.168.0.1:1024
+#      - haproxy2 192.168.0.2:1024
+#    table: t1 type string size 10m store gpc0
+haproxy_config_peers: {}
+haproxy_group_config_peers: {}
+haproxy_host_config_peers: {}
+
 #haproxy_acls:
 #  allowlist: |
 #    192.168.1.0/24
