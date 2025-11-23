@@ -2,6 +2,6 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: Include metabrainz.haproxy
+    - name: Include ansible-role-haproxy
       include_role:
-        name: metabrainz.haproxy
+        name: ansible-role-haproxy
