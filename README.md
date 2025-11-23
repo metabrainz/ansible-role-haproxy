@@ -86,3 +86,26 @@ deps =
 
 **Remove a version:**
 Simply remove it from the `envlist` (e.g., remove `py310` or `ansible5`).
+
+### Updating Tests After Template Changes
+
+When you modify the HAProxy configuration template or add new features, update the test files:
+
+1. **Update test variables** in `molecule/default/inventory/group_vars/all.yml`:
+```yaml
+haproxy_config_peers:
+  mypeers:
+    peer:
+      - haproxy1 192.168.0.1:1024
+```
+
+2. **Update expected output** in `molecule/default/files/haproxy.cfg`:
+```
+peers mypeers
+    peer haproxy1 192.168.0.1:1024
+```
+
+3. **Run tests** to verify:
+```bash
+tox -e py311-ansible7
+```
