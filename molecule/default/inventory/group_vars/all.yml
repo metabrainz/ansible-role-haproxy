@@ -61,6 +61,7 @@ haproxy_config_peers:
     server:
       - haproxy1
       - haproxy2 192.168.0.2:1025
+    shards: 2
 
 haproxy_acls:
   blocklist:
