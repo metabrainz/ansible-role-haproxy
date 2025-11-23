@@ -96,6 +96,9 @@
     _haproxy_config_resolvers: >-
       {{ haproxy_config_resolvers | combine(
         haproxy_group_config_resolvers, haproxy_host_config_resolvers, recursive=True) }}
+    _haproxy_config_peers: >-
+      {{ haproxy_config_peers | combine(
+        haproxy_group_config_peers, haproxy_host_config_peers, recursive=True) }}
   notify: reload haproxy
 
 - name: Create HAProxy SystemD service drop-in directory

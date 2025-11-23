@@ -47,3 +47,12 @@
 {%     endif %}
 {%   endfor %}
 {% endif %}
+{% if _haproxy_config_peers %}
+
+{%   for name, config in _haproxy_config_peers|dictsort %}
+{{ macros.haproxy_config_block(config, 'peers', name) -}}
+{%     if not loop.last %}
+
+{%     endif %}
+{%   endfor %}
+{% endif %}
