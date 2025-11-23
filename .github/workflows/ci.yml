@@ -67,10 +67,9 @@ jobs:
         run: |
           cat <<EOF > test-requirements.txt
           ansible==${{ matrix.ansible }}.*
-          docker==6.*
+          docker>=7.0.0
           molecule-plugins[docker]
-          # https://github.com/docker/docker-py/issues/3113
-          urllib3<2.0
+          urllib3>=2.0
           EOF
           echo "REQS_HASH=$(sha256sum test-requirements.txt | awk '{ print $1 }')" >> "$GITHUB_ENV"
 
