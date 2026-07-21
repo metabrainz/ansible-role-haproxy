@@ -4,6 +4,7 @@
     src: "{{ haproxy_repository_key_src }}"
     dest: "{{ haproxy_repository_key_path }}"
     mode: "0644"
+  when: ansible_distribution_version is version('24.04', '<')
 
 - name: Remove HAProxy repository key from /etc/apt/trusted.gpg.d
   file:
@@ -27,6 +28,13 @@
     filename: haproxy
     state: present
     update_cache: yes
+  when: ansible_distribution_version is version('24.04', '<')
+
+- name: Remove HAProxy PPA on Ubuntu >= 24.04 (ships haproxy 2.8 natively)
+  file:
+    path: /etc/apt/sources.list.d/haproxy.list
+    state: absent
+  when: ansible_distribution_version is version('24.04', '>=')
 
 - name: Install HAProxy
   apt:
